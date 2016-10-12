@@ -4,7 +4,10 @@ $(document).ready(function(event){
 		lastPlayer: 'O',
 	};
 	var counter=0;
+	var turnCounter=0;
+	var winner='';
 
+////Create Initial cell states object
 	function createCellStates(rows, columns) {
 		for (var i=0; i<rows; i++) {
 			cellStates.push([]);
@@ -16,6 +19,7 @@ $(document).ready(function(event){
 		});
 	}
 
+/////Return index of a given cell
 	function getCellIndex(cell) {
 		var indexOne;
 		var indexTwo;
@@ -35,35 +39,68 @@ $(document).ready(function(event){
 		} else {
 			indexTwo = 2;
 		}	
-		
 		return [indexOne, indexTwo];
-
 	}
 
+//////Check whether all array elements are equal to the last player
+	function arraySameValue(value) {
+		return value == game.lastPlayer; 
+	}
+
+/////Handle winner
+	function handleWinner() {
+		$('header').append('<span class="winner">'+game.lastPlayer+ ' wins!</span>');
+		winner=game.lastPlayer;
+	}	
+
+/////Check whether a player has won via column
 	function columnCheck(player) {
 		for (var j=0; j<cellStates[0].length; j++) {	
 			var col=[];
 			for (var i=0; i<cellStates.length; i++) {
 				col.push(cellStates[i][counter]);
 			}
-			if (col[0]===player && col[1]===player && col[2]===player) {
-				$('header').append('<span class="winner">'+player+ ' wins!</span>');
+			if (col.every(arraySameValue)) {
+				handleWinner();
 				return;
 			}
 		if (counter<2){
 			counter++
 			} else {counter=0}	
 		}
+
 	}
 
+/////Check whether a player has won via row
 	function rowCheck(player){
 		for (var i=0; i<cellStates.length; i++){
-			if (cellStates[i][0]===player && cellStates[i][1]===player && cellStates[i][2]===player) {
-				$('header').append('<span class="winner">'+player+ ' wins!</span>');
+			if (cellStates[i].every(arraySameValue)) {
+				handleWinner();
 				return;
 			}
-		}
+		}	
 	}
+
+//////Check whether a player has won via diagonal
+	function diagonalCheck(player){
+		var diag1 = []; 
+		var diag2= [];
+		for (var i=0; i<cellStates.length; i++) {
+			diag1.push(cellStates[i][i]);
+		}
+		if (diag1.every(arraySameValue)) {
+			handleWinner();
+			return;
+		}
+		for (var j=0; j<cellStates.length; j++) {
+			diag2.push(cellStates[j][2-j]);
+		}
+		if (diag2.every(arraySameValue)) {
+			handleWinner();
+			return;
+		}
+	}	
+		
 
 /////////Log elements in array
 	function logArrayElements(element, index, array) {
@@ -71,33 +108,56 @@ $(document).ready(function(event){
 	}
 
 ///////Event Listeners////////////////////////////
+//////Start game
 	$('.start-game-button').click(function(event){
 		$(this).addClass('hidden');
 		$('.row, .start-new-game-container').removeClass('hidden');
-		$('.start-new-game-container').append('<button class="start-new-game">Start New Game</button>');
+		$('.start-new-game-container').append('<button class="start-new-game-button">Start New Game</button>');
 		createCellStates(3, 3);
 	});	
 
+//////Handle cell clicks
 	$('.cell').click(function(event){
-		var cellIndex = getCellIndex($(this));
-		if (cellStates[cellIndex[0]][cellIndex[1]] === 0) {
-			if (game.lastPlayer==='O') {
-					$(this).text('X');
-					game.lastPlayer = 'X';
-				} else {
-					$(this).text('O');
-					game.lastPlayer = 'O';
-				}
-			cellStates[cellIndex[0]][cellIndex[1]] = $(this).text();		
-		} 			
-		//console.log(cellStates.forEach(logArrayElements));
-		rowCheck(game.lastPlayer);
-		columnCheck(game.lastPlayer);
+		turnCounter++; 
+		if (turnCounter<10 && winner=='') {		
+				var cellIndex = getCellIndex($(this));
+				if (cellStates[cellIndex[0]][cellIndex[1]] === 0) {
+					if (game.lastPlayer==='O') {
+							$(this).text('X');
+							game.lastPlayer = 'X';
+						} else {
+							$(this).text('O');
+							game.lastPlayer = 'O';
+						}
+					cellStates[cellIndex[0]][cellIndex[1]] = $(this).text();		
+				} 			
+				//console.log(cellStates.forEach(logArrayElements));
+				rowCheck(game.lastPlayer);
+				columnCheck(game.lastPlayer);
+				diagonalCheck(game.lastPlayer);
+		} if (turnCounter==9 && winner=='') {	
+			$('header').append('<span class="tie">The game is over! It is a tie.</span>');
+			winner='tie';
+		}	
 	});
 
-
-
-
+//////Click Start New Game
+	$('.start-new-game-container').on('click', '.start-new-game-button', function(event){
+		////reset variables
+		cellStates = [];
+		game = {
+		lastPlayer: 'O',
+		};
+		counter=0;
+		turnCounter=0;
+		winner='';
+		//reset board
+		$('.winner').remove();
+		$('.tie').remove();
+		$('.cell').text('');
+		//create new cell states
+		createCellStates(3, 3);
+	});	
 
 });
 

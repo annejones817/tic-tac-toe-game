@@ -1,10 +1,28 @@
 body {
 	font-family: helvetica, arial, sans-serif;
+	background-color: #f5f5f5;
 }
 
 header {
 	text-align:center;
 	color: #034f84;
+}
+
+.instructions {
+	/*border:1px solid #92a8d1;*/
+	width:50%;
+	text-align:left;
+	margin:0 auto;
+	padding:5px;
+
+}
+
+.bold {
+	font-weight:bold;
+}
+
+.spacer {
+	height:10px;
 }
 
 button {
@@ -37,12 +55,13 @@ button:hover {
 	margin-top:15px;
 }
 
-.start-new-game {
+.start-new-game-button {
 	display: block; 
-	margin:0 auto;
+	margin: 0 auto;
+	clear:both;
 }
 
-.winner {
+.winner, .tie {
 	display:block;
 	margin-bottom:10px;
 	font-size:1em;
