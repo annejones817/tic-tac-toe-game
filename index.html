@@ -10,12 +10,19 @@
 <main>
 	<header>
 		<h1>Tic Tac Toe</h1>
-		<p class='instructions'><span class='bold'>Instructions</span>: X goes first. X or O win by marking three cells in a row, either across a row, down a column or along a diagonal. Have fun!</p>
+		<div class='instructions'>
+			<span class='bold'>Instructions</span>: 
+			<ul>
+				<li>X goes first</li>
+				<li>Win by marking three consecutive cells across a row, down a column, or along a diagonal</li>
+				<li>Start a new game anytime with the button below</li>
+			</ul>
+		</div>
+		<button class='start-game-button' type='click'>Start New Game</button>
 		<div class='spacer'></div>
-		<button class='start-game-button' type='click'>Start Game</button>
 	</header>
 		
-	<div class='hidden top row'>
+	<div class='top row'>
 		<div class='cell left col-4'>
 		</div>
 		<div class='cell center col-4'>
@@ -24,7 +31,7 @@
 		</div>
 	</div>
 
-	<div class='hidden middle row'>
+	<div class='middle row'>
 		<div class='cell left col-4'>
 		</div>
 		<div class='cell center col-4'>
@@ -33,7 +40,7 @@
 		</div>
 	</div>	
 
-	<div class='hidden lower row'>
+	<div class='lower row'>
 		<div class='cell left col-4'>
 		</div>
 		<div class='cell center col-4'>
@@ -41,8 +48,6 @@
 		<div class='cell right col-4'>
 		</div>
 	</div>	
-	<div class='start-new-game-container hidden'>
-	</div>
 
 </main>
 

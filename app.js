@@ -1,11 +1,13 @@
 $(document).ready(function(event){
+////Declare variables and set for first game
 	var cellStates = [];
-	var game = {
+	var	game = {
 		lastPlayer: 'O',
-	};
-	var counter=0;
-	var turnCounter=0;
-	var winner='';
+		};
+	var	counter=0;
+	var	turnCounter=0;
+	var	winner='';
+	createCellStates(3, 3);
 
 ////Create Initial cell states object
 	function createCellStates(rows, columns) {
@@ -100,50 +102,10 @@ $(document).ready(function(event){
 			return;
 		}
 	}	
-		
-
-/////////Log elements in array
-	function logArrayElements(element, index, array) {
-	  console.log('a[' + index + '] = ' + element);
-	}
 
 ///////Event Listeners////////////////////////////
 //////Start game
 	$('.start-game-button').click(function(event){
-		$(this).addClass('hidden');
-		$('.row, .start-new-game-container').removeClass('hidden');
-		$('.start-new-game-container').append('<button class="start-new-game-button">Start New Game</button>');
-		createCellStates(3, 3);
-	});	
-
-//////Handle cell clicks
-	$('.cell').click(function(event){
-		turnCounter++; 
-		if (turnCounter<10 && winner=='') {		
-				var cellIndex = getCellIndex($(this));
-				if (cellStates[cellIndex[0]][cellIndex[1]] === 0) {
-					if (game.lastPlayer==='O') {
-							$(this).text('X');
-							game.lastPlayer = 'X';
-						} else {
-							$(this).text('O');
-							game.lastPlayer = 'O';
-						}
-					cellStates[cellIndex[0]][cellIndex[1]] = $(this).text();		
-				} 			
-				//console.log(cellStates.forEach(logArrayElements));
-				rowCheck(game.lastPlayer);
-				columnCheck(game.lastPlayer);
-				diagonalCheck(game.lastPlayer);
-		} if (turnCounter==9 && winner=='') {	
-			$('header').append('<span class="tie">The game is over! It is a tie.</span>');
-			winner='tie';
-		}	
-	});
-
-//////Click Start New Game
-	$('.start-new-game-container').on('click', '.start-new-game-button', function(event){
-		////reset variables
 		cellStates = [];
 		game = {
 		lastPlayer: 'O',
@@ -159,5 +121,30 @@ $(document).ready(function(event){
 		createCellStates(3, 3);
 	});	
 
+//////Handle cell clicks
+	$('.cell').click(function(event){
+		if (turnCounter<10 && winner=='') {		
+				var cellIndex = getCellIndex($(this));
+				if (cellStates[cellIndex[0]][cellIndex[1]] === 0) {
+					if (game.lastPlayer==='O') {
+							$(this).text('X');
+							game.lastPlayer = 'X';
+						} else {
+							$(this).text('O');
+							game.lastPlayer = 'O';
+						}
+					cellStates[cellIndex[0]][cellIndex[1]] = $(this).text();		
+					turnCounter++; 
+				} 			
+				rowCheck(game.lastPlayer);
+				columnCheck(game.lastPlayer);
+				diagonalCheck(game.lastPlayer);
+				
+				
+		} if (turnCounter==9 && winner=='') {	
+			$('header').append('<span class="tie">The game is over! It is a tie.</span>');
+			winner='tie';
+		}	
+	});
 });
 
