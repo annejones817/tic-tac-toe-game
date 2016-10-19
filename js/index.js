@@ -1,4 +1,5 @@
 var $ = require('jquery');
+require('../css/index.less');
 
 $(document).ready(function(event){
 ////Declare variables and set for first game

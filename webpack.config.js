@@ -12,5 +12,12 @@ module.exports = {
         path: path.resolve(__dirname, 'build'),
         filename: filename.join('.'),
     },
-    devtool: 'source-map'
+    devtool: 'source-map',
+    module: {
+            loaders: [
+            {test: /\.less$/,
+          	loader: "style-loader!css-loader!less-loader"}
+          ]
+      }
 }
+
